@@ -1,0 +1,21 @@
+.DS_Store
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+*.ipa
+*.dSYM
+
+# 由 project.yml（XcodeGen）生成，不入库
+*.xcodeproj/
+*.xcworkspace/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
+
+# 本地签名覆盖（各人 Team / Bundle ID 不同的场景）
+LocalSigning.xcconfig

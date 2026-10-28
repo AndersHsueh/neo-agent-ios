@@ -1,0 +1,95 @@
+# neo-agent-ios 工程定义（XcodeGen）。
+#
+# 唯一真源：`.xcodeproj` 由本文件生成、不入库。克隆后先跑：
+#   xcodegen generate
+#
+# 修改工程结构（target / 配置 / 签名）只改这里，不要手改 .xcodeproj。
+
+name: NeoAgent
+
+options:
+  bundleIdPrefix: com.andershsueh
+  deploymentTarget:
+    iOS: "18.0"
+  xcodeVersion: "26.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    DEVELOPMENT_TEAM: BP6XLRFH4K
+    CODE_SIGN_STYLE: Automatic
+
+configs:
+  Debug: debug
+  Release: release
+
+targets:
+  NeoAgent:
+    type: application
+    platform: iOS
+    sources:
+      - path: NeoAgent
+        excludes:
+          # Info.plist 由 INFOPLIST_FILE 引用，不能再作为资源参与拷贝
+          - Resources/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.andershsueh.neo-agent-ios
+        PRODUCT_NAME: NeoAgent
+        INFOPLIST_FILE: NeoAgent/Resources/Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        # 一期只做 iPhone；iPad 适配见 docs/roadmap.md
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_EMIT_LOC_STRINGS: YES
+
+  NeoAgentTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: NeoAgentTests
+    dependencies:
+      - target: NeoAgent
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.andershsueh.neo-agent-ios.tests
+        GENERATE_INFOPLIST_FILE: YES
+
+  NeoAgentUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: NeoAgentUITests
+    dependencies:
+      - target: NeoAgent
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.andershsueh.neo-agent-ios.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: NeoAgent
+
+schemes:
+  NeoAgent:
+    build:
+      targets:
+        NeoAgent: all
+        NeoAgentTests: [test]
+        NeoAgentUITests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      targets:
+        - NeoAgentTests
+        - NeoAgentUITests
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
